@@ -6,20 +6,34 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
-
 require("vicious")
 
+
+
 -- Load Debian menu entries
-require("debian.menu") fuu
+-- require("debian.menu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/home/lepht/github/awesome-config/theme/zenburn_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
+
+awful.util.spawn_with_shell("xcompmgr -cF &")
+awful.util.spawn_with_shell("wmname LG3D &")
+
+
+naughty.config.default_preset.height           = 200
+naughty.config.default_preset.width            = 400
+naughty.config.default_preset.font             = beautiful.font or "Verdana 8"
+naughty.config.default_preset.fg               = beautiful.fg_focus or '#ffffff'
+naughty.config.default_preset.bg               = beautiful.bg_focus or '#535d6c'
+naughty.config.presets.normal.border_color     = beautiful.border_focus or '#535d6c'
+naughty.config.default_preset.border_width     = 1
+naughty.config.default_preset.icon_size       = 64
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -29,14 +43,13 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 -- Delightful widgets
-require('delightful.widgets.battery')
+-- require('delightful.widgets.battery')
 require('delightful.widgets.cpu')
 require('delightful.widgets.datetime')
-require('delightful.widgets.imap')
+-- require('delightful.widgets.imap')
 require('delightful.widgets.memory')
 require('delightful.widgets.network')
 require('delightful.widgets.pulseaudio')
-require('delightful.widgets.weather')
 
 -- Which widgets to install?
 -- This is the order the widgets appear in the wibox.
@@ -44,9 +57,8 @@ install_delightful = {
     delightful.widgets.network,
     delightful.widgets.cpu,
     delightful.widgets.memory,
-    delightful.widgets.weather,
-    delightful.widgets.imap,
-    delightful.widgets.battery,
+    -- delightful.widgets.imap,
+    -- delightful.widgets.battery,
     delightful.widgets.pulseaudio,
     delightful.widgets.datetime
 }
@@ -56,27 +68,30 @@ delightful_config = {
     [delightful.widgets.cpu] = {
         command = 'gnome-system-monitor',
     },
-    [delightful.widgets.imap] = {
-        {
-            user      = 'myuser',
-            password  = 'mypassword',
-            host      = 'mail.example.com',
-            ssl       = true,
-            mailboxes = { 'INBOX', 'awesome' },
-            command   = 'evolution -c mail',
-        },
-    },
+    -- [delightful.widgets.imap] = {
+        -- {
+            -- user      = 'myuser',
+            -- password  = 'mypassword',
+            -- host      = 'mail.example.com',
+            -- ssl       = true,
+            -- mailboxes = { 'INBOX', 'awesome' },
+            -- command   = 'evolution -c mail',
+        -- },
+    -- },
+    -- [delightful.widgets.battery] = {
+      -- battery = 'BAT0'  
+    -- },
     [delightful.widgets.memory] = {
         command = 'gnome-system-monitor',
     },
-    [delightful.widgets.weather] = {
-        {
-            city = 'Helsinki',
-            command = 'gnome-www-browser http://ilmatieteenlaitos.fi/saa/Helsinki',
-        },
-    },
     [delightful.widgets.pulseaudio] = {
         mixer_command = 'gnome-volume-control',
+    },
+    [delightful.widgets.network] = {
+      excluded_devices = {
+        "^eth1$", "^lo$", "^vboxnet0$"
+      },
+      command = 'gksudo etherape',
     },
 }
 
@@ -119,32 +134,36 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 'dash', 'www', '0day', 'dev', 'music', 6, 7 }, s, layouts[1])
+    tags[s] = awful.tag({ 'dash', 'www', '0day', 'dev', 'media', 'etc' }, s, layouts[1])
 end
 -- }}}
 
 -- {{{ Menu
+
+ require('freedesktop.utils')
+  freedesktop.utils.terminal = terminal  -- default: "xterm"
+  freedesktop.utils.icon_theme = 'Faenza-Dark' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
+  -- require('freedesktop.menu')
+
 -- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
+ -- menu_items = freedesktop.menu.new()
+  -- myawesomemenu = {
+     -- { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+     -- { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+     -- { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'gtk-refresh' }) },
+     -- { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'gtk-quit' }) }
+  -- }
+  -- table.insert(menu_items, { "awesome", myawesomemenu, beautiful.awesome_icon })
+  -- table.insert(menu_items, { "open terminal", terminal, freedesktop.utils.lookup_icon({icon = 'terminal'}) })
+  -- table.insert(menu_items, { "Debian", debian.menu.Debian_menu.Debian, freedesktop.utils.lookup_icon({ icon = 'debian-logo' }) })
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+  -- mymainmenu = awful.menu.new({ items = menu_items, width = 150 })
 
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-                                     menu = mymainmenu })
+  -- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                     -- menu = mymainmenu })
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" })
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -208,27 +227,39 @@ for s = 1, screen.count() do
                                           end, mytasklist.buttons)  
    
 -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s, height ="20" })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, height = "18" })
     -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
+    local widgets_front = {
         {
-            mylauncher,
+            -- mylauncher,
             mytaglist[s],
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-        mytextclock,
+    }
+    local widgets_middle = {}
+    for delightful_container_index, delightful_container_data in pairs(delightful_container.widgets) do
+        for widget_index, widget_data in pairs(delightful_container_data) do
+            table.insert(widgets_middle, widget_data)
+            if delightful_container.icons[delightful_container_index] and delightful_container.icons[delightful_container_index][widget_index] then
+                table.insert(widgets_middle, delightful_container.icons[delightful_container_index][widget_index])
+            end
+        end
+    end
+    
+    local widgets_end = {
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
+    mywibox[s].widgets = awful.util.table.join(widgets_front, widgets_middle, widgets_end)
 end
 -- }}}
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    -- awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -250,7 +281,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -352,6 +383,33 @@ for i = 1, keynumber do
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.toggletag(tags[client.focus.screen][i])
                       end
+                  end),
+            --numpad mapping
+        awful.key({ modkey }, "#" .. i + 86,
+                  function ()
+                        local screen = mouse.screen
+                        if tags[screen][i] then
+                            awful.tag.viewonly(tags[screen][i])
+                        end
+                  end),
+        awful.key({ modkey, "Control" }, "#" .. i + 86,
+                  function ()
+                      local screen = mouse.screen
+                      if tags[screen][i] then
+                          awful.tag.viewtoggle(tags[screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Shift" }, "#" .. i + 86,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.movetotag(tags[client.focus.screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 86,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.toggletag(tags[client.focus.screen][i])
+                      end
                   end))
 end
 
@@ -372,10 +430,13 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = true,
                      keys = clientkeys,
+                     size_hints_honor = false,
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
+      properties = { floating = true } },
+    { rule = { class = "Tomboy" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
@@ -414,4 +475,5 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
 -- }}}
