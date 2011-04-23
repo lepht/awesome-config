@@ -7,7 +7,7 @@ require("beautiful")
 -- Notification library
 require("naughty")
 require("vicious")
-
+require("scratch")
 
 
 -- Load Debian menu entries
@@ -18,11 +18,11 @@ require("vicious")
 beautiful.init("/home/lepht/github/awesome-config/theme/zenburn_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "urxvtc"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
-awful.util.spawn_with_shell("xcompmgr -cF &")
+-- awful.util.spawn_with_shell("xcompmgr -c -t-5 -l-5 -r4.2 -o.55 &")
 awful.util.spawn_with_shell("wmname LG3D &")
 
 
@@ -36,11 +36,8 @@ naughty.config.default_preset.border_width     = 1
 naughty.config.default_preset.icon_size       = 64
 
 -- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+alt = "Mod1"
 
 -- Delightful widgets
 -- require('delightful.widgets.battery')
@@ -134,7 +131,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 'dash', 'www', '0day', 'dev', 'media', 'etc' }, s, layouts[1])
+    tags[s] = awful.tag({ 'www', '0-day', 'dash', 'dev', 'media', 'etc' }, s, layouts[1])
 end
 -- }}}
 
@@ -227,7 +224,7 @@ for s = 1, screen.count() do
                                           end, mytasklist.buttons)  
    
 -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s, height = "18" })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, height = "20" })
     -- Add widgets to the wibox - order matters
     local widgets_front = {
         {
@@ -259,7 +256,6 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    -- awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -267,9 +263,11 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+    -- awful.key({ modkey }, "s", function () scratch.pad.toggle() end),
+    awful.key({ modkey }, "s", function () scratch.drop("urxvtc") end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ alt,              }, "`", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -281,7 +279,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    -- awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    awful.key({ modkey,           }, "w", function () awful.menu.clients({ width=230 }) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -289,7 +287,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
-    awful.key({ modkey,           }, "Tab",
+    awful.key({ alt,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
             if client.focus then
@@ -312,23 +310,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
-    -- Prompt
-    -- awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
-
     awful.key({ modkey },            "r",     function ()
       awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" .. 
  		  beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal .. 
 		  "' -sb '" .. beautiful.bg_focus .. 
 		  "' -sf '" .. beautiful.fg_focus .. "'") 
-	  end),
+	  end)
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end)
+    -- awful.key({ modkey }, "x",
+              -- function ()
+                  -- awful.prompt.run({ prompt = "Run Lua code: " },
+                  -- mypromptbox[mouse.screen].widget,
+                  -- awful.util.eval, nil,
+                  -- awful.util.getdir("cache") .. "/history_eval")
+              -- end)
 )
 
 clientkeys = awful.util.table.join(
@@ -477,3 +472,6 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- }}}
+
+awful.util.spawn_with_shell("tomboy &")
+awful.util.spawn_with_shell("dropbox start &")
