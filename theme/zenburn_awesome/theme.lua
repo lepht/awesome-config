@@ -32,12 +32,12 @@ theme.delightful_not_found                      = '/usr/share/icons/gnome/16x16/
 -- theme.delightful_battery_low                    = '/usr/share/icons/gnome/16x16/status/battery-caution.png'
 
 -- IMAP widget
-theme.delightful_imap_mail_read                 = '/usr/share/icons/gnome/32x32/status/stock_mail-open.png'
-theme.delightful_imap_mail_unread               = '/usr/share/icons/gnome/32x32/status/stock_mail-unread.png'
+-- theme.delightful_imap_mail_read                 = '/usr/share/icons/gnome/32x32/status/stock_mail-open.png'
+-- theme.delightful_imap_mail_unread               = '/usr/share/icons/gnome/32x32/status/stock_mail-unread.png'
 
 -- Network widget
-theme.delightful_network_dialup                 = '/home/lepht/github/awesome-config/theme/zenburn_awesome/widget_icons/003a_30.png'
-theme.delightful_network_wired                  = '/home/lepht/github/awesome-config/theme/zenburn_awesome/widget_icons/003a_29.png'
+-- theme.delightful_network_dialup                 = '/home/lepht/github/awesome-config/theme/zenburn_awesome/widget_icons/003a_30.png'
+-- theme.delightful_network_wired                  = '/home/lepht/github/awesome-config/theme/zenburn_awesome/widget_icons/003a_29.png'
 -- theme.delightful_network_wireless               = '/home/lepht/github/awesome-config/theme/zenburn_awesome/widget_icons/003a_01.png'
 
 -- Volume widget
@@ -105,7 +105,7 @@ theme.mouse_finder_color = "#CC9393"
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height = "15"
+theme.menu_height = "20"
 theme.menu_width  = "100"
 -- }}}
 
