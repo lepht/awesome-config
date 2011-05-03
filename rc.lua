@@ -26,6 +26,15 @@ awful.util.spawn_with_shell("xcompmgr -cF &")
 awful.util.spawn_with_shell("wmname LG3D &")
 
 
+naughty.config.default_preset.height           = 200
+naughty.config.default_preset.width            = 400
+naughty.config.default_preset.font             = beautiful.font or "Verdana 8"
+naughty.config.default_preset.fg               = beautiful.fg_focus or '#ffffff'
+naughty.config.default_preset.bg               = beautiful.bg_focus or '#535d6c'
+naughty.config.presets.normal.border_color     = beautiful.border_focus or '#535d6c'
+naughty.config.default_preset.border_width     = 1
+naughty.config.default_preset.icon_size       = 64
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
