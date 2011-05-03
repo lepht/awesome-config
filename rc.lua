@@ -51,7 +51,6 @@ require('delightful.widgets.pulseaudio')
 -- Which widgets to install?
 -- This is the order the widgets appear in the wibox.
 install_delightful = {
-    -- delightful.widgets.imap,
   delightful.widgets.network,
   delightful.widgets.cpu,
   delightful.widgets.memory,
@@ -62,16 +61,6 @@ install_delightful = {
 
 -- Widget configuration
 delightful_config = {
-    -- [delightful.widgets.imap] = {
-        -- {
-            -- user      = 'myuser',
-            -- password  = 'mypassword',
-            -- host      = 'mail.example.com',
-            -- ssl       = true,
-            -- mailboxes = { 'INBOX', 'awesome' },
-            -- command   = 'evolution -c mail',
-        -- },
-    -- },
   [delightful.widgets.cpu] = {
     command = 'gnome-system-monitor',
   },
