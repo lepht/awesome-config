@@ -429,6 +429,8 @@ end)
     buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
     properties = { floating = true } },
+    { rule = { name = "Untitled - Google Chrome" },
+    properties = { floating = true } },
     { rule = { class = "pinentry" },
     properties = { floating = true } },
     { rule = { class = "Tomboy" },
