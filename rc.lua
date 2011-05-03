@@ -139,22 +139,28 @@ end
 -- }}}
 
 -- {{{ Menu
+
+ require('freedesktop.utils')
+  freedesktop.utils.terminal = terminal  -- default: "xterm"
+  freedesktop.utils.icon_theme = 'Faenza-Dark' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
+  -- require('freedesktop.menu')
+
 -- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
+ -- menu_items = freedesktop.menu.new()
+  -- myawesomemenu = {
+     -- { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+     -- { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+     -- { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'gtk-refresh' }) },
+     -- { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'gtk-quit' }) }
+  -- }
+  -- table.insert(menu_items, { "awesome", myawesomemenu, beautiful.awesome_icon })
+  -- table.insert(menu_items, { "open terminal", terminal, freedesktop.utils.lookup_icon({icon = 'terminal'}) })
+  -- table.insert(menu_items, { "Debian", debian.menu.Debian_menu.Debian, freedesktop.utils.lookup_icon({ icon = 'debian-logo' }) })
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+  -- mymainmenu = awful.menu.new({ items = menu_items, width = 150 })
 
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-                                     menu = mymainmenu })
+  -- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                     -- menu = mymainmenu })
 -- }}}
 
 -- {{{ Wibox
@@ -225,25 +231,37 @@ for s = 1, screen.count() do
 -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s, height = "18" })
     -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
+    local widgets_front = {
         {
-            mylauncher,
+            -- mylauncher,
             mytaglist[s],
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-        mytextclock,
+    }
+    local widgets_middle = {}
+    for delightful_container_index, delightful_container_data in pairs(delightful_container.widgets) do
+        for widget_index, widget_data in pairs(delightful_container_data) do
+            table.insert(widgets_middle, widget_data)
+            if delightful_container.icons[delightful_container_index] and delightful_container.icons[delightful_container_index][widget_index] then
+                table.insert(widgets_middle, delightful_container.icons[delightful_container_index][widget_index])
+            end
+        end
+    end
+    
+    local widgets_end = {
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
+    mywibox[s].widgets = awful.util.table.join(widgets_front, widgets_middle, widgets_end)
 end
 -- }}}
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    -- awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -265,7 +283,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
