@@ -43,14 +43,13 @@ naughty.config.default_preset.icon_size       = 64
 modkey = "Mod4"
 
 -- Delightful widgets
-require('delightful.widgets.battery')
+-- require('delightful.widgets.battery')
 require('delightful.widgets.cpu')
 require('delightful.widgets.datetime')
-require('delightful.widgets.imap')
+-- require('delightful.widgets.imap')
 require('delightful.widgets.memory')
 require('delightful.widgets.network')
 require('delightful.widgets.pulseaudio')
-require('delightful.widgets.weather')
 
 -- Which widgets to install?
 -- This is the order the widgets appear in the wibox.
@@ -58,9 +57,8 @@ install_delightful = {
     delightful.widgets.network,
     delightful.widgets.cpu,
     delightful.widgets.memory,
-    delightful.widgets.weather,
-    delightful.widgets.imap,
-    delightful.widgets.battery,
+    -- delightful.widgets.imap,
+    -- delightful.widgets.battery,
     delightful.widgets.pulseaudio,
     delightful.widgets.datetime
 }
@@ -70,24 +68,21 @@ delightful_config = {
     [delightful.widgets.cpu] = {
         command = 'gnome-system-monitor',
     },
-    [delightful.widgets.imap] = {
-        {
-            user      = 'myuser',
-            password  = 'mypassword',
-            host      = 'mail.example.com',
-            ssl       = true,
-            mailboxes = { 'INBOX', 'awesome' },
-            command   = 'evolution -c mail',
-        },
-    },
+    -- [delightful.widgets.imap] = {
+        -- {
+            -- user      = 'myuser',
+            -- password  = 'mypassword',
+            -- host      = 'mail.example.com',
+            -- ssl       = true,
+            -- mailboxes = { 'INBOX', 'awesome' },
+            -- command   = 'evolution -c mail',
+        -- },
+    -- },
+    -- [delightful.widgets.battery] = {
+      -- battery = 'BAT0'  
+    -- },
     [delightful.widgets.memory] = {
         command = 'gnome-system-monitor',
-    },
-    [delightful.widgets.weather] = {
-        {
-            city = 'Helsinki',
-            command = 'gnome-www-browser http://ilmatieteenlaitos.fi/saa/Helsinki',
-        },
     },
     [delightful.widgets.pulseaudio] = {
         mixer_command = 'gnome-volume-control',
