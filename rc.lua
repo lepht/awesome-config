@@ -6,11 +6,12 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
-
 require("vicious")
 
+
+
 -- Load Debian menu entries
-require("debian.menu") fuu
+-- require("debian.menu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
