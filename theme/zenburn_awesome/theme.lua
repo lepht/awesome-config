@@ -51,7 +51,7 @@ theme.delightful_network_wired                  = '/home/lepht/github/awesome-co
 ---}}}
 
 -- {{{ Styles
-theme.font      = "Droid Sans Mono 8"
+theme.font      = "Terminus 6"
 
 -- {{{ Colors
 theme.fg_normal = "#DCDCCC"
