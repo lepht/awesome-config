@@ -10,7 +10,7 @@ require('freedesktop.utils')
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg /home/lepht/Pictures/Backgrounds/great_design_w.jpg" }
+-- theme.wallpaper_cmd = { "gconftool-2 --type string --set /desktop/gnome/background/picture_filename /home/lepht/Pictures/Backgrounds/a_day_in_the_life/A_Day_in_the_Life.xml" }
 
 -- }}}
 
