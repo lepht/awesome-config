@@ -87,6 +87,12 @@ delightful_config = {
     [delightful.widgets.pulseaudio] = {
         mixer_command = 'gnome-volume-control',
     },
+    [delightful.widgets.network] = {
+      excluded_devices = {
+        "^eth1$", "^lo$", "^vboxnet0$"
+      },
+      command = 'gksudo etherape',
+    },
 }
 
 -- Prepare the container that is used when constructing the wibox
